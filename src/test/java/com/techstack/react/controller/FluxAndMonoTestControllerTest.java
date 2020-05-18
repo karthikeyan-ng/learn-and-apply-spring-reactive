@@ -70,4 +70,36 @@ class FluxAndMonoTestControllerTest {
                 () -> System.out.println("Completed!")
         );
     }
+
+    @Test
+    @DisplayName("This is a Flux test to verify the testcase")
+    void fluxTestElements_WithoutError() {
+
+        Flux<String> stringFlux = Flux.just("Spring Boot", "Spring Data", "Spring Message")
+                .log();
+
+        //Success: Inorder to verify the Flux elements, you can use StepVerifier
+//        StepVerifier.create(stringFlux)
+//                    .expectNext("Spring Boot")
+//                    .expectNext("Spring Data")
+//                    .expectNext("Spring Message")
+//                    .verifyComplete();
+
+        //Failure: Change the order in the "expectNext"
+//        StepVerifier.create(stringFlux)
+//                .expectNext("Spring Data")
+//                .expectNext("Spring Boot")
+//                .expectNext("Spring Message")
+//                .verifyComplete();
+
+        //Failure: What would happen if you not called "verifyComplete()"
+        StepVerifier.create(stringFlux)
+                .expectNext("Spring Boot")
+                .expectNext("Spring Data")
+                .expectNext("Spring Message");
+
+        //If you not call this, element won't be subscribed!
+        //Because, this would act as a subscribe() in Flux
+//                .verifyComplete();
+    }
 }
