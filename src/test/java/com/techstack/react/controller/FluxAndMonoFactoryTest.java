@@ -54,6 +54,18 @@ public class FluxAndMonoFactoryTest {
     }
 
     @Test
+    @DisplayName("Test to use Flux.range")
+    void fluxUsingRange() {
+
+        Flux<Integer> integerFlux = Flux.range(1, 5).log();
+
+        StepVerifier.create(integerFlux)
+                    .expectNext(1, 2, 3, 4, 5)
+                    .verifyComplete();
+
+    }
+
+    @Test
     @DisplayName("Test to use Mono.justOrEmpty")
     void monoUsingJustOrEmpty() {
 
