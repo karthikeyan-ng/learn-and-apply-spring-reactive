@@ -147,4 +147,24 @@ class FluxAndMonoTestControllerTest {
                 .verify()
         ;
     }
+
+    @Test
+    @DisplayName("This test is to verify number of elements the Flux is going to return")
+    void fluxElementsCount_WithError() {
+        Flux<String> stringFlux = Flux.just("Spring Boot", "Spring Data", "Spring Message")
+                .concatWith(Flux.error(new RuntimeException("Exception while processing")))
+                .log();
+
+        StepVerifier.create(stringFlux)
+
+                    //By use this method
+                    .expectNextCount(3)
+
+                    //If you want to verify the Exception message?
+                    .expectErrorMessage("Exception while processing" )
+
+                    //.verifyComplete(); //<==This is not applicable. Use verify()
+                    .verify()
+        ;
+    }
 }
