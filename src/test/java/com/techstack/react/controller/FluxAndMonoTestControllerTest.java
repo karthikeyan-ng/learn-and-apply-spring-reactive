@@ -182,4 +182,17 @@ class FluxAndMonoTestControllerTest {
                     //Step4: call verifyComplete. Mandatory, else Mono won't call
                     .verifyComplete();
     }
+
+    @Test
+    void monoTest_WithError() {
+
+        StepVerifier.create(
+                //Step1: Mono deals with only one element, you can't use expectNext()
+                //Hence, directly used Mono.error
+                Mono.error(new RuntimeException("Exception Occurred")).log())
+                    .expectError(RuntimeException.class)
+
+                //Step2: Since, this is error scenario, you can't apply verifyComplete(). Use verify()
+                .verify();
+    }
 }
