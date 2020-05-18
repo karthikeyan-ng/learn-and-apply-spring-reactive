@@ -167,4 +167,19 @@ class FluxAndMonoTestControllerTest {
                     .verify()
         ;
     }
+
+    @Test
+    void monoTest() {
+        //Step1
+        Mono<String> stringMono = Mono.just("Spring");
+
+        //Step2
+        StepVerifier.create(stringMono.log())
+
+                    //Step3: verify the element
+                    .expectNext("Spring")
+
+                    //Step4: call verifyComplete. Mandatory, else Mono won't call
+                    .verifyComplete();
+    }
 }
