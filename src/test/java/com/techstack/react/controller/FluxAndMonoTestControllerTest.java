@@ -102,4 +102,27 @@ class FluxAndMonoTestControllerTest {
         //Because, this would act as a subscribe() in Flux
 //                .verifyComplete();
     }
+
+    @Test
+    @DisplayName("This is a Flux test to verify the testcase with Error")
+    void fluxTestElements_WithError() {
+        Flux<String> stringFlux = Flux.just("Spring Boot", "Spring Data", "Spring Message")
+                .concatWith(Flux.error(new RuntimeException("Exception while processing")))
+                .log();
+
+        StepVerifier.create(stringFlux)
+                .expectNext("Spring Boot")
+                .expectNext("Spring Data")
+                .expectNext("Spring Message")
+
+                //This would just verify the Exception class
+//                .expectError(RuntimeException.class)
+
+                //If you want to verify the Exception message?
+                .expectErrorMessage("Exception while processing" )
+
+//                .verifyComplete(); //<==This is not applicable. Don't use it with Error. Instead use verify()
+                .verify()
+        ;
+    }
 }
