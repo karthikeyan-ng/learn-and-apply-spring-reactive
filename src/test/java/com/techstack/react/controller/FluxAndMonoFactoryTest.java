@@ -28,4 +28,16 @@ public class FluxAndMonoFactoryTest {
                     .verifyComplete();
     }
 
+    @Test
+    @DisplayName("Test to use Flux.fromArray")
+    void fluxUsingArray() {
+        String names[] = new String[]{"Karthi", "Sara", "Pascal", "Thomas", "Christof"};
+
+        Flux<String> namesFlux = Flux.fromArray(names);
+
+        StepVerifier.create(namesFlux)
+                .expectNext("Karthi", "Sara", "Pascal", "Thomas", "Christof")
+                .verifyComplete();
+    }
+
 }
