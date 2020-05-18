@@ -125,4 +125,26 @@ class FluxAndMonoTestControllerTest {
                 .verify()
         ;
     }
+
+    @Test
+    @DisplayName("This is a Flux test to verify the testcase with Error")
+    void fluxTestElements_WithError1() {
+        Flux<String> stringFlux = Flux.just("Spring Boot", "Spring Data", "Spring Message")
+                .concatWith(Flux.error(new RuntimeException("Exception while processing")))
+                .log();
+
+        StepVerifier.create(stringFlux)
+
+                //TIP: This is a simplified way of asserting elements
+                .expectNext("Spring Boot", "Spring Data", "Spring Message")
+
+                //This would just verify the Exception class
+                //.expectError(RuntimeException.class)
+
+                //If you want to verify the Exception message?
+                .expectErrorMessage("Exception while processing" )
+
+                .verify()
+        ;
+    }
 }
