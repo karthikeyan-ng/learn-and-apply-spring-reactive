@@ -40,4 +40,15 @@ public class FluxAndMonoFactoryTest {
                 .verifyComplete();
     }
 
+    @Test
+    @DisplayName("Test to use Flux.fromStream")
+    void fluxUsingStream() {
+
+        Flux<String> namesFlux = Flux.fromStream(names.stream());
+
+        StepVerifier.create(namesFlux)
+                .expectNext("Karthi", "Sara", "Pascal", "Thomas", "Christof")
+                .verifyComplete();
+    }
+
 }
