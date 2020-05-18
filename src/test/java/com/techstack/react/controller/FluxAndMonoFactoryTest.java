@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.Arrays;
@@ -49,6 +50,17 @@ public class FluxAndMonoFactoryTest {
         StepVerifier.create(namesFlux)
                 .expectNext("Karthi", "Sara", "Pascal", "Thomas", "Christof")
                 .verifyComplete();
+    }
+
+    @Test
+    @DisplayName("Test to use Mono.justOrEmpty")
+    void monoUsingJustOrEmpty() {
+
+        Mono<String> mono = Mono.justOrEmpty(null); //==> You will get Mono.Empty()
+
+        StepVerifier.create(mono.log())
+                    .verifyComplete();
+
     }
 
 }
