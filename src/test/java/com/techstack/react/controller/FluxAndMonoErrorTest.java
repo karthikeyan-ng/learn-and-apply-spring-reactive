@@ -3,8 +3,11 @@ package com.techstack.react.controller;
 import com.techstack.react.controller.exception.CustomException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
+
+import java.time.Duration;
 
 public class FluxAndMonoErrorTest {
 
@@ -87,6 +90,32 @@ public class FluxAndMonoErrorTest {
                 //--
 
                 .expectError(CustomException.class)
+                .verify();
+    }
+
+    @Test
+    @DisplayName("Catch the RuntimeException and Convert it to application Custom Exception With Retry and BackOff")
+    void fluxErrorHandling_OnErrorMap_WithRetryBackOff() {
+        Flux<String> stringFlux = Flux.just("A", "B", "C")
+                .concatWith(Flux.error(new RuntimeException("Exception Occurred")))
+                .concatWith(Flux.just("D"))
+                .onErrorMap(e -> new CustomException(e))
+
+                .retryBackoff(2, Duration.ofSeconds(5)); //<= retry two times
+
+
+        StepVerifier.create(stringFlux.log())
+                .expectSubscription()
+                .expectNext("A", "B", "C")
+
+                //--configured retry(2) hence, it expects the same sequence two times.
+                //Comment below two lines to check the error message
+                .expectNext("A", "B", "C")
+                .expectNext("A", "B", "C")
+                //--
+
+                //if you are using retryBackoff() with error, it would display reactor.core.Exceptions$RetryExhaustedException
+                .expectError(IllegalStateException.class)
                 .verify();
     }
 }
