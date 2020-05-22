@@ -2,6 +2,7 @@ package com.techstack.react.controller;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -61,6 +62,29 @@ public class FluxAndMonoBackPressureTest {
                               () -> System.out.println("Done"),             //Completion event
                               subscription -> subscription.cancel());       //Actual subscription
 
+    }
+
+    @Test
+    void customized_BackPressure() {
+        Flux<Integer> integerFlux = Flux.range(1, 10) //<= This will produce a Flux of 10 items
+                                        .log();
+
+        integerFlux.subscribe(new BaseSubscriber<>() {
+
+            /**
+             * If you want to do data level validation you can use this method
+             * like: if value is 4, I have to cancel the subscription
+             * @param value
+             */
+            @Override
+            protected void hookOnNext(Integer value) {
+                request(1);
+                System.out.println("Value received is : " + value);
+                if(value == 4) {
+                    cancel();
+                }
+            }
+        });
     }
 
 
