@@ -1,5 +1,6 @@
 package com.techstack.react.controller;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -26,5 +27,22 @@ public class FluxAndMonoBackPressureTest {
                     .expectNext(2)
                     .thenCancel()
                     .verify();
+    }
+
+    /**
+     * This testcase is an Actual logic w.r.t about Testcase
+     */
+    @Test
+    @DisplayName("How to do programmatic way of subscribe call")
+    void backPressure() {
+
+        Flux<Integer> integerFlux = Flux.range(1, 10) //<= This will produce a Flux of 10 items
+                .log();
+
+        integerFlux.subscribe(e -> System.out.println("Element is " + e),   //Actual element
+                              e -> System.err.println("Exception is " + e), //Error handling
+                              () -> System.out.println("Done"),             //Completion event
+                              (subscription -> subscription.request(2)));//Actual subscription
+
     }
 }
