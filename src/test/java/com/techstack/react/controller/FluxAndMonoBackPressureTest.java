@@ -30,7 +30,7 @@ public class FluxAndMonoBackPressureTest {
     }
 
     /**
-     * This testcase is an Actual logic w.r.t above Testcase
+     * This testcase is an Actual logic w.r.t above Testcase backPressureTest()
      */
     @Test
     @DisplayName("How to do programmatic way of subscribe call")
@@ -45,4 +45,23 @@ public class FluxAndMonoBackPressureTest {
                               (subscription -> subscription.request(2)));//Actual subscription
 
     }
+
+    /**
+     * This testcase is an Actual logic w.r.t above Testcase
+     */
+    @Test
+    @DisplayName("How to do programmatic way of subscribe call")
+    void backPressure_Cancel() {
+
+        Flux<Integer> integerFlux = Flux.range(1, 10) //<= This will produce a Flux of 10 items
+                .log();
+
+        integerFlux.subscribe(e -> System.out.println("Element is " + e),   //Actual element
+                              e -> System.err.println("Exception is " + e), //Error handling
+                              () -> System.out.println("Done"),             //Completion event
+                              subscription -> subscription.cancel());       //Actual subscription
+
+    }
+
+
 }
