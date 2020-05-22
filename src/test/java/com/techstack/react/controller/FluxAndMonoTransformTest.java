@@ -83,7 +83,7 @@ public class FluxAndMonoTransformTest {
 
     /**
      * This will use the parallel-N thread to do your operation.
-     * The final output is not garnette.
+     * The final output is not garnette w.r.t input order
      * If you want to stick with your input order there are some other handy methods available.
      */
     @Test
@@ -101,6 +101,36 @@ public class FluxAndMonoTransformTest {
                                 .subscribeOn(parallel()))
 
                         //Step3: Again convert back to Flux<String> using FlatMap
+                        .flatMap(s -> Flux.fromIterable(s))
+                        .log();
+
+        StepVerifier.create(alphabetsFlux)
+                .expectNextCount(12)
+                .verifyComplete();
+    }
+
+    /**
+     * This will use the parallel-N thread to do your operation.
+     * The final output is garnette w.r.t input order
+     * If you want to stick with your input order there are some other handy methods available.
+     * Let's explorer here
+     * 1. concatMap() -> maintains order but you will feel like sequential
+     * 2. flatMapSequential() -> must faster compare to concatMap()
+     */
+    @Test
+    @DisplayName("Execute FlatMap in Parallel and Maintain Order")
+    void transformUsingFlatMap_Parallel_And_Maintain_Order() {
+        Flux<String> alphabetsFlux =
+                Flux.fromIterable(List.of("A", "B", "C", "D", "E", "F"))
+
+                        .window(2)
+
+                        //Option 1
+                        //.concatMap(s -> s.map(this::convertToList).subscribeOn(parallel()))
+
+                        //Option 2
+                        .flatMapSequential(s -> s.map(this::convertToList).subscribeOn(parallel()))
+
                         .flatMap(s -> Flux.fromIterable(s))
                         .log();
 
