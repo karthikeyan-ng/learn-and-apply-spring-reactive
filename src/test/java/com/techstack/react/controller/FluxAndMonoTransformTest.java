@@ -1,5 +1,6 @@
 package com.techstack.react.controller;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -61,5 +62,29 @@ public class FluxAndMonoTransformTest {
         StepVerifier.create(namesFlux)
                     .expectNext("KARTHI", "PASCAL", "THOMAS", "CHRISTOF")
                     .verifyComplete();
+    }
+
+    /**
+     * The whole process will be executed in main thread
+     */
+    @Test
+    @DisplayName("Execute FlatMap in Sequential")
+    void transformUsingFlatMap_Sequential() {
+        Flux<String> alphabetsFlux = Flux.fromIterable(List.of("A", "B", "C", "D", "E", "F"))
+                .flatMap(s -> Flux.fromIterable(convertToList(s))) //When to use flatMap? If you want to call a DB or external service that returns a Flux<T>
+                .log();
+
+        StepVerifier.create(alphabetsFlux)
+                    .expectNextCount(12)
+                    .verifyComplete();
+    }
+
+    private List<String> convertToList(String s) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return List.of(s, "newValue");
     }
 }
