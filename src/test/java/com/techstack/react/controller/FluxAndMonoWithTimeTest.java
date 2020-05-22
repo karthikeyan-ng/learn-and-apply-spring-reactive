@@ -27,7 +27,7 @@ public class FluxAndMonoWithTimeTest {
     }
 
     @Test
-    void finiteSequenceTest() throws InterruptedException {
+    void finiteSequenceTest() {
 
         /**
          * The below code will start emitting values from 0 to N using take(N) long values.
@@ -41,5 +41,23 @@ public class FluxAndMonoWithTimeTest {
                     .expectSubscription()
                     .expectNext(0L, 1L, 2L)
                     .verifyComplete();
+    }
+
+    @Test
+    void finiteSequenceMapTest() {
+
+        /**
+         * The below code will start emitting values from 0 to N using take(N) long values.
+         * Each value will be emitting each 100 milli seconds
+         */
+        Flux<Integer> finiteFlux = Flux.interval(Duration.ofMillis(100))
+                .map(l -> l.intValue())
+                .take(3)
+                .log();
+
+        StepVerifier.create(finiteFlux)
+                .expectSubscription()
+                .expectNext(0, 1, 2)
+                .verifyComplete();
     }
 }
