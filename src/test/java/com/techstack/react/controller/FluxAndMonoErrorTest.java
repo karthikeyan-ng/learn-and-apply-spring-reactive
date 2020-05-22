@@ -64,4 +64,29 @@ public class FluxAndMonoErrorTest {
                 .expectError(CustomException.class)
                 .verify();
     }
+
+    @Test
+    @DisplayName("Catch the RuntimeException and Convert it to application Custom Exception With Retry")
+    void fluxErrorHandling_OnErrorMap_WithRetry() {
+        Flux<String> stringFlux = Flux.just("A", "B", "C")
+                .concatWith(Flux.error(new RuntimeException("Exception Occurred")))
+                .concatWith(Flux.just("D"))
+                .onErrorMap(e -> new CustomException(e))
+
+                .retry(2); //<= retry two times
+
+
+        StepVerifier.create(stringFlux.log())
+                .expectSubscription()
+                .expectNext("A", "B", "C")
+
+                //--configured retry(2) hence, it expects the same sequence two times.
+                //Comment below two lines to check the error message
+                .expectNext("A", "B", "C")
+                .expectNext("A", "B", "C")
+                //--
+
+                .expectError(CustomException.class)
+                .verify();
+    }
 }
