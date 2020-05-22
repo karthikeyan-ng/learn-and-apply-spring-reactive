@@ -44,4 +44,23 @@ public class FluxAndMonoCombineTest {
                 .expectNextCount(6)
                 .verifyComplete();
     }
+
+    @Test
+    void combineUsingConcat() {
+        Flux<String> flux1 = Flux.just("A", "B", "C");
+        Flux<String> flux2 = Flux.just("D", "E", "F");
+
+        /**
+         * In real use case, if you want to do two DB / External API calls and
+         * combine them into another Flux and send it back to the caller
+         * you can use Flux.concat()
+         */
+
+        Flux<String> mergedFlux = Flux.concat(flux1, flux2);
+
+        StepVerifier.create(mergedFlux.log())
+                .expectSubscription()
+                .expectNext("A", "B", "C", "D", "E", "F")
+                .verifyComplete();
+    }
 }
