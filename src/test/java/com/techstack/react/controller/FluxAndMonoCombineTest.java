@@ -90,4 +90,27 @@ public class FluxAndMonoCombineTest {
                 .expectNext("A", "B", "C", "D", "E", "F")
                 .verifyComplete();
     }
+
+    @Test
+    void combineUsingZip() {
+        Flux<String> flux1 = Flux.just("A", "B", "C");
+        Flux<String> flux2 = Flux.just("D", "E", "F");
+
+        /**
+         * In real use case, if you want to do two DB / External API calls and
+         * combine them into another Flux and send it back to the caller
+         * you can use Flux.zip()
+         */
+
+        Flux<String> mergedFlux = Flux.zip(
+                flux1,
+                flux2,
+//                (t1, t2) -> t1.concat(t2));  // AD : BE : CF
+                String::concat);  // Same effect with Functional reference
+
+        StepVerifier.create(mergedFlux.log())
+                .expectSubscription()
+                .expectNext("AD", "BE", "CF")
+                .verifyComplete();
+    }
 }
