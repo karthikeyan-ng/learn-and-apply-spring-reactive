@@ -60,4 +60,27 @@ public class FluxAndMonoWithTimeTest {
                 .expectNext(0, 1, 2)
                 .verifyComplete();
     }
+
+    /**
+     * The below Flux will start emitting each value in the interval of 100 milli seconds.
+     * However, if you want to further delay on each element you can use delayElements()
+     */
+    @Test
+    void finiteSequenceMap_WithDelay() {
+
+        /**
+         * The below code will start emitting values from 0 to N using take(N) long values.
+         * Each value will be emitting each 100 milli seconds
+         */
+        Flux<Integer> finiteFlux = Flux.interval(Duration.ofMillis(100))
+                                       .delayElements(Duration.ofSeconds(1))
+                                       .map(l -> l.intValue())
+                                       .take(3)
+                                       .log();
+
+        StepVerifier.create(finiteFlux)
+                .expectSubscription()
+                .expectNext(0, 1, 2)
+                .verifyComplete();
+    }
 }
