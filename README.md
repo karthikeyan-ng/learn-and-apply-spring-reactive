@@ -10,4 +10,10 @@ Handling Errors in a Reactive Streams `FluxAndMonoErrorTest`
 Infinite Reactive Streams `FluxAndMonoWithTimeTest`
 Back Pressure on Reactive Data Streams - How it works? `FluxAndMonoBackPressureTest`  
 
+Project Reactor Communication Model:  
+    - Supports Both Pull and Pull model  
+    - Pull: The Subscriber decides how to pull data from the Publisher  
+    - Push: The Publisher decides how to push data to the Subscriber  
+
+What is the Cold and Hot Reactive Stream? `ColdAndHotPublisherTest`  
 
