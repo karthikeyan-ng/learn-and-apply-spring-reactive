@@ -18,6 +18,11 @@ public class FluxAndMonoController {
 
     }
 
+    @GetMapping("/mono1")
+    public Mono<Integer> returnMono() {
+        return Mono.just(1).log();
+    }
+
     /**
      * For Flux of String type, browser is keep on populating data
      * for the given request from producer side.

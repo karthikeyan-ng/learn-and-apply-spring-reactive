@@ -120,4 +120,20 @@ class FluxAndMonoControllerTest {
                 .verify();
 
     }
+
+    @Test
+    @DisplayName("/mono1 endpoint to test integer Mono")
+    void mono1_endpoint() {
+
+        Integer expectedValue = new Integer(1);
+
+        webTestClient
+                .get()
+                .uri("/mono1")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(Integer.class)
+                .consumeWith(response -> assertEquals(expectedValue, response.getResponseBody()));
+    }
 }
