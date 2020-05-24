@@ -1,4 +1,4 @@
-package com.techstack.react.controller;
+package com.techstack.react.learn;
 
 import com.techstack.react.controller.exception.CustomException;
 import org.junit.jupiter.api.DisplayName;

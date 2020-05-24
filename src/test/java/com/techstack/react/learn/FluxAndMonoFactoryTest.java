@@ -1,4 +1,4 @@
-package com.techstack.react.controller;
+package com.techstack.react.learn;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
