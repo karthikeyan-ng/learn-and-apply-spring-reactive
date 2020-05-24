@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 @RestController
-public class FluxAndMonoTestController {
+public class FluxAndMonoController {
 
     @GetMapping("/mono")
     public Mono<String> getSubject() {
