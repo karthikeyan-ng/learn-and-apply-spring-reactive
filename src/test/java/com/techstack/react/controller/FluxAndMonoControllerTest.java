@@ -49,7 +49,7 @@ class FluxAndMonoControllerTest {
     }
 
     @Test
-    @DisplayName("/flux1 endpoint test approach2")
+    @DisplayName("/flux1 endpoint test approach2: verify th size")
     void flux1_endpoint_test_approach2() {
 
         webTestClient
@@ -65,7 +65,7 @@ class FluxAndMonoControllerTest {
     }
 
     @Test
-    @DisplayName("/flux1 endpoint test approach3")
+    @DisplayName("/flux1 endpoint test approach3: using returnResult")
     void flux1_endpoint_test_approach3() {
 
        List<Integer> expectedIntegerList = List.of(1, 2, 3, 4);
@@ -80,5 +80,22 @@ class FluxAndMonoControllerTest {
                 .returnResult();
 
        assertEquals(expectedIntegerList, entityExchangeResult.getResponseBody());
+    }
+
+    @Test
+    @DisplayName("/flux1 endpoint test approach4: using consumeWith()")
+    void flux1_endpoint_test_approach4() {
+
+        List<Integer> expectedIntegerList = List.of(1, 2, 3, 4);
+
+        webTestClient
+                .get()
+                .uri("/flux1")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(Integer.class)
+                .consumeWith(response ->
+                    assertEquals(expectedIntegerList, response.getResponseBody()));
     }
 }
