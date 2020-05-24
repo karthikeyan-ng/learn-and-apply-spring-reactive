@@ -1,4 +1,4 @@
-package com.techstack.react.controller;
+package com.techstack.react.learn;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,7 @@ import reactor.test.StepVerifier;
 /**
  * Test Mono and Flux
  */
-class FluxAndMonoTestControllerTest {
+class FluxAndMonoExampleTest {
 
     @Test
     @DisplayName("This is Simple Flex to subscribe series of String")
