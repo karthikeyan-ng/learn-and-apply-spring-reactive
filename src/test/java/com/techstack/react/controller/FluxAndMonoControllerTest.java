@@ -98,4 +98,26 @@ class FluxAndMonoControllerTest {
                 .consumeWith(response ->
                     assertEquals(expectedIntegerList, response.getResponseBody()));
     }
+
+    @Test
+    @DisplayName("/flux3 endpoint to test infinite Flux values using Stream")
+    void flux3_endpoint_infinite_stream() {
+        Flux<Long> longStreamFlux = webTestClient
+                .get()
+                .uri("/flux3")
+                .accept(MediaType.APPLICATION_STREAM_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .returnResult(Long.class)
+                .getResponseBody();
+
+        StepVerifier
+                .create(longStreamFlux)
+                .expectNext(0L)
+                .expectNext(1L)
+                .expectNext(2L) //<= Infinite stream emits values continuously. Hence, limits to some value and apply cancel() event
+                .thenCancel()
+                .verify();
+
+    }
 }

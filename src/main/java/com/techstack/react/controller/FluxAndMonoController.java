@@ -64,4 +64,23 @@ public class FluxAndMonoController {
                 .delayElements(Duration.ofSeconds(1))
                 .log();
     }
+
+    /**
+     * This endpoint emits infinite Flux of values with the duration of 1 sec
+     * {@code MediaType.APPLICATION_STREAM_JSON_VALUE}
+     *
+     * Inorder to test this endpoint, open two browser tabs and hit the endpoint.
+     * Each tab will start consume the values from this Flux from the starting (1...N).
+     * This is called "Cold Publisher".
+     *
+     * If you stop the SpringBoot application, you will see the log contains two cancel()
+     * event. Why? Because, publisher will pass the cancel signal to the subscriber that
+     * no more data is coming from the publisher side.
+     *
+     * @return
+     */
+    @GetMapping(value = "/flux3", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+    public Flux<Long> returnInfiniteFluxStream() {
+        return Flux.interval(Duration.ofSeconds(1)).log();
+    }
 }
