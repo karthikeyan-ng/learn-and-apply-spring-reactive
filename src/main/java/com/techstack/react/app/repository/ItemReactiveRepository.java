@@ -1,6 +1,6 @@
-package com.techstack.react.repository;
+package com.techstack.react.app.repository;
 
-import com.techstack.react.document.Item;
+import com.techstack.react.app.document.Item;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import reactor.core.publisher.Mono;
 
