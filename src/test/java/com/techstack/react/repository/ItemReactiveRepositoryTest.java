@@ -122,4 +122,23 @@ class ItemReactiveRepositoryTest {
                         item1.getDescription().equals("Motorola G8 Plus"))
                 .verifyComplete();
     }
+
+    @Test
+    @DisplayName("Update an Item")
+    void updateItem() {
+        double newPrice = 680.0;
+        Flux<Item> updatedItem = itemReactiveRepository
+                .findByDescription("Apple Ipad")
+                .map(item -> {
+                    item.setPrice(newPrice);
+                    return item;
+                })
+                .flatMap(item -> itemReactiveRepository.save(item));
+
+        StepVerifier
+                .create(updatedItem.log("updated Item"))
+                .expectSubscription()
+                .expectNextMatches(item -> item.getPrice() == 680.0)
+                .verifyComplete();
+    }
 }
