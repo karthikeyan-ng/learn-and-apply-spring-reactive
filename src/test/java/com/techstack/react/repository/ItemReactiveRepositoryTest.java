@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -15,10 +16,9 @@ import reactor.test.StepVerifier;
 import java.util.List;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @DataMongoTest
 @ExtendWith(SpringExtension.class)
+//@DirtiesContext //<= when ever you are altering the state of the application context use this in your testcase!
 class ItemReactiveRepositoryTest {
 
     @Autowired ItemReactiveRepository itemReactiveRepository;
