@@ -171,4 +171,22 @@ class ItemControllerTest {
                 .jsonPath("$.price").isEqualTo(1399.99);
 
     }
+
+    @Test
+    @DisplayName("Delete an Item")
+    void deleteItem() {
+        webTestClient
+                //Given
+                .delete()
+                .uri(ItemConstants.ITEM_END_POINT_V1.concat("/{id}"), "ABC123")
+                .accept(MediaType.APPLICATION_JSON)
+
+                //When
+                .exchange()
+
+                //Then
+                .expectStatus().isOk()
+                .expectBody(Void.class);
+
+    }
 }

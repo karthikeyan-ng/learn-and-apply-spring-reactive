@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,5 +42,10 @@ public class ItemController {
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<Item> createItem(@RequestBody final Item item) {
         return itemReactiveRepository.save(item);
+    }
+
+    @DeleteMapping(ITEM_END_POINT_V1 + "/{id}")
+    public Mono<Void> deleteItem(@PathVariable final String id) {
+        return itemReactiveRepository.deleteById(id);
     }
 }
