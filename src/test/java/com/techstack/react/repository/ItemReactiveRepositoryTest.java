@@ -93,4 +93,16 @@ class ItemReactiveRepositoryTest {
                 .expectNextMatches(item -> item.getDescription().equals("MacBook Pro 16"))
                 .verifyComplete();
     }
+
+    @Test
+    @DisplayName("Find Item(s) by given Description")
+    void findItemByDescription() {
+        StepVerifier
+                .create(itemReactiveRepository
+                        .findByDescription("Samsung Tab") //it's a exact match!
+                        .log("findItemByDescription"))
+                .expectSubscription()
+                .expectNextCount(1)
+                .verifyComplete();
+    }
 }
