@@ -1,4 +1,4 @@
-package com.techstack.react.controller;
+package com.techstack.react.learn.controller;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

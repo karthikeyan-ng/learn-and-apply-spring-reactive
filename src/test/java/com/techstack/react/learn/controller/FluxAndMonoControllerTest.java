@@ -1,4 +1,4 @@
-package com.techstack.react.controller;
+package com.techstack.react.learn.controller;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

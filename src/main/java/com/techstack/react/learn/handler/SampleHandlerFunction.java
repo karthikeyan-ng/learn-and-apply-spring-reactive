@@ -1,4 +1,4 @@
-package com.techstack.react.handler;
+package com.techstack.react.learn.handler;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;

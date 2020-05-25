@@ -1,4 +1,4 @@
-package com.techstack.react.controller.exception;
+package com.techstack.react.learn.controller.exception;
 
 public class CustomException extends Throwable {
 

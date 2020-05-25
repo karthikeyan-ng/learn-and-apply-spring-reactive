@@ -1,6 +1,6 @@
-package com.techstack.react.router;
+package com.techstack.react.learn.router;
 
-import com.techstack.react.handler.SampleHandlerFunction;
+import com.techstack.react.learn.handler.SampleHandlerFunction;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;

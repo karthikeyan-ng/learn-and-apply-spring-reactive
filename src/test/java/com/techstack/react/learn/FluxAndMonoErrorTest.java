@@ -1,9 +1,8 @@
 package com.techstack.react.learn;
 
-import com.techstack.react.controller.exception.CustomException;
+import com.techstack.react.learn.controller.exception.CustomException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
