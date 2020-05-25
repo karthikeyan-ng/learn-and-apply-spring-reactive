@@ -42,7 +42,8 @@ class ItemControllerTest {
         return List.of(
                 new Item(null, "Apple Ipad", 350.0),
                 new Item(null, "Samsung Tab", 450.0),
-                new Item(null, "LG TV", 850.0)
+                new Item(null, "LG TV", 850.0),
+                new Item("ABC123", "Apple MacBook Pro 16", 2400.0)
         );
     }
 
@@ -121,4 +122,29 @@ class ItemControllerTest {
                 .verifyComplete();
     }
 
+    /**
+     * Here in this testcase, using jsonPath, you can assert the value
+     * comparision using "$.price" expression. Here $ is a root element.
+     */
+    @Test
+    @DisplayName("get One Item by using Id (Valid)")
+    void getOneItem() {
+        webTestClient
+                .get()
+                .uri(ItemConstants.ITEM_END_POINT_V1.concat("/{id}"), "ABC123")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.price", 2400.0);
+    }
+
+    @Test
+    @DisplayName("get One Item by using Id (In Valid)")
+    void getOneItem_NotFound() {
+        webTestClient
+                .get()
+                .uri(ItemConstants.ITEM_END_POINT_V1.concat("/{id}"), "DEF123")
+                .exchange()
+                .expectStatus().isNotFound();
+    }
 }
