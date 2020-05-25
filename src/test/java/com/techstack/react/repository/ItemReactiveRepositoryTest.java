@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -103,6 +105,21 @@ class ItemReactiveRepositoryTest {
                         .log("findItemByDescription"))
                 .expectSubscription()
                 .expectNextCount(1)
+                .verifyComplete();
+    }
+
+    @Test
+    @DisplayName("Save an Item")
+    void saveItem() {
+        Item item = new Item(null, "Motorola G8 Plus", 600.0);
+        Mono<Item> savedItemMono = itemReactiveRepository.save(item);
+
+        StepVerifier
+                .create(savedItemMono.log("saved Item"))
+                .expectSubscription()
+                .expectNextMatches(item1 ->
+                        Objects.nonNull(item1.getId()) &&
+                        item1.getDescription().equals("Motorola G8 Plus"))
                 .verifyComplete();
     }
 }
