@@ -122,4 +122,29 @@ Inorder to execute `SampleHandlerFunction` methods `flux` and `mono` you have to
 After that you can create a routes using `RouterFunctions` and add N number of routes using `route` and `andRoute` method.  
 Each route configures HTTP method `GET`, `POST` with Rest path followed by configure the handler method.
 
+### Spring WebFlux & Netty - Execution Model
 
+#### Spring WebFlux - Behind the Scenes
+Refer: Reference PDF 
+- page: Spring WebFlux - Non Blocking Request/Response
+- page: Spring WebFlux - Request / Response
+
+#### Introduction to Netty - Channel, EventLoops
+
+**Netty**  
+* Netty is an asynchronous event-driven **network** application framework for rapid development of maintainable **high performance** 
+protocol servers & clients.  
+* Netty is build on top of **Java**  
+
+**Who uses Netty?**  
+* Facebook
+* Google
+* Instagram
+* Twitter
+* Apache Cassandra and etc.,
+
+**Protocols Supported**
+* FTP  
+* HTTP  
+* SMTP  
+* WebSocket and etc.,  
