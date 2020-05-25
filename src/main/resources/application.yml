@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    active: dev #<== This is the default profile when application starts
+---
+spring:
+  profiles: dev
+  data:
+    mongodb:
+      uri: mongodb+srv://system_ng:9iOTFH4arMWOBCy3@my-mongo-db-cluster-5fezf.mongodb.net/retail?retryWrites=true&w=majority
+---
+spring:
+  profiles: nonprod
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: local
+---
+spring:
+  profiles: prod
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: local
