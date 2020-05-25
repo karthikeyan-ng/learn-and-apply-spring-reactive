@@ -17,8 +17,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 import java.util.List;
+import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -79,6 +83,42 @@ class ItemControllerTest {
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
                 .expectBodyList(Item.class)
                 .hasSize(3);
+    }
+
+    @Test
+    @DisplayName("Get all Items - approach 2")
+    void getAllItems_Approach2() {
+        webTestClient
+                .get()
+                .uri(ItemConstants.ITEM_END_POINT_V1)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBodyList(Item.class)
+                .hasSize(3)
+                .consumeWith(response -> {
+                    List<Item> items = response.getResponseBody();
+                    items.forEach(item -> assertTrue(Objects.nonNull(item.getId())));
+                });
+    }
+
+    @Test
+    @DisplayName("Get all Items - approach 3")
+    void getAllItems_Approach3() {
+        Flux<Item> itemsFlux = webTestClient
+                .get()
+                .uri(ItemConstants.ITEM_END_POINT_V1)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .returnResult(Item.class)
+                .getResponseBody();
+
+        //This would call over the Network and get the count
+        StepVerifier
+                .create(itemsFlux.log("Value from Network : "))
+                .expectNextCount(3)
+                .verifyComplete();
     }
 
 }
