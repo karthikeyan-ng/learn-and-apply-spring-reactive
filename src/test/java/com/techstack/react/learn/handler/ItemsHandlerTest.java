@@ -68,4 +68,25 @@ class ItemsHandlerTest {
                 .hasSize(4);
     }
 
+    @Test
+    @DisplayName("get One Item by using Id (Valid) Success")
+    void getOneItem_Success() {
+        webTestClient
+                .get()
+                .uri(ItemConstants.ITEM_FUNCTIONAL_END_POINT_V1.concat("/{id}"), "ABC123")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.price", 2400.0);
+    }
+
+    @Test
+    @DisplayName("get One Item by using Invalid Id")
+    void getOneItem_NotFound() {
+        webTestClient
+                .get()
+                .uri(ItemConstants.ITEM_FUNCTIONAL_END_POINT_V1.concat("/{id}"), "DEF123")
+                .exchange()
+                .expectStatus().isNotFound();
+    }
 }
