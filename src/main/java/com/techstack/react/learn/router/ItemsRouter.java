@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 import static com.techstack.react.app.consts.ItemConstants.ITEM_FUNCTIONAL_END_POINT_V1;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
+import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 
 @Configuration
@@ -23,7 +24,12 @@ public class ItemsRouter {
                         itemsHandler::getAllItems)
 
                 .andRoute(GET(ITEM_FUNCTIONAL_END_POINT_V1.concat("/{id}")).and(accept(MediaType.APPLICATION_JSON)),
-                        itemsHandler::getOneItem);
+                        itemsHandler::getOneItem)
+
+                .andRoute(POST(ITEM_FUNCTIONAL_END_POINT_V1).and(accept(MediaType.APPLICATION_JSON)),
+                        itemsHandler::createItem)
+
+        ;
 
     }
 }
