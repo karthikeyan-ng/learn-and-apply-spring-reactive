@@ -84,7 +84,7 @@ class ItemControllerTest {
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
                 .expectBodyList(Item.class)
-                .hasSize(3);
+                .hasSize(4);
     }
 
     @Test
@@ -97,7 +97,7 @@ class ItemControllerTest {
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
                 .expectBodyList(Item.class)
-                .hasSize(3)
+                .hasSize(4)
                 .consumeWith(response -> {
                     List<Item> items = response.getResponseBody();
                     items.forEach(item -> assertTrue(Objects.nonNull(item.getId())));
@@ -119,7 +119,7 @@ class ItemControllerTest {
         //This would call over the Network and get the count
         StepVerifier
                 .create(itemsFlux.log("Value from Network : "))
-                .expectNextCount(3)
+                .expectNextCount(4)
                 .verifyComplete();
     }
 
@@ -188,5 +188,49 @@ class ItemControllerTest {
                 .expectStatus().isOk()
                 .expectBody(Void.class);
 
+    }
+
+    @Test
+    @DisplayName("Update an Item Price Value")
+    void updateItem_PriceValue() {
+        double newPrice = 400.0;
+        Item item = new Item(null, "Apple MacBook Pro 16", newPrice);
+
+        webTestClient
+                //Given
+                .put()
+                .uri(ItemConstants.ITEM_END_POINT_V1.concat("/{id}"), "ABC123")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .body(Mono.just(item), Item.class)
+
+                //When
+                .exchange()
+
+                //Then
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.price", newPrice);
+    }
+
+    @Test
+    @DisplayName("Update an Item Price Value Using Invalid Id")
+    void updateItem_InvalidId() {
+        double newPrice = 400.0;
+        Item item = new Item(null, "Apple MacBook Pro 16", newPrice);
+
+        webTestClient
+                //Given
+                .put()
+                .uri(ItemConstants.ITEM_END_POINT_V1.concat("/{id}"), "XYZ123")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .body(Mono.just(item), Item.class)
+
+                //When
+                .exchange()
+
+                //Then
+                .expectStatus().isNotFound();
     }
 }
