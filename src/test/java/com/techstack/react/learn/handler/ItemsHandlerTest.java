@@ -127,4 +127,27 @@ class ItemsHandlerTest {
                 .expectBody(Void.class);
 
     }
+
+    @Test
+    @DisplayName("Update an Item Price Value")
+    void updateItem_PriceValue() {
+        double newPrice = 400.0;
+        Item item = new Item(null, "Apple MacBook Pro 16", newPrice);
+
+        webTestClient
+                //Given
+                .put()
+                .uri(ItemConstants.ITEM_FUNCTIONAL_END_POINT_V1.concat("/{id}"), "ABC123")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .body(Mono.just(item), Item.class)
+
+                //When
+                .exchange()
+
+                //Then
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.price", newPrice);
+    }
 }
