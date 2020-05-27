@@ -137,4 +137,27 @@ public class ItemClientController {
                 .bodyToFlux(Item.class);
 
     }
+
+    /**
+     * Error Handling scenario using exchange() method
+     */
+    @GetMapping("/client/exchange/error")
+    public Flux<Item> errorExchange() {
+        return webClient
+                .get()
+                .uri("/v1/items/runtimeException")
+                .exchange()
+                .flatMapMany(clientResponse -> {
+
+                   if(clientResponse.statusCode().is5xxServerError()) {
+                        return  clientResponse.bodyToMono(String.class)
+                                .flatMap(errorMessage -> {
+                                    log.error("Error Message : {} ", errorMessage);
+                                    throw new RuntimeException(errorMessage);
+                                });
+                    } else {
+                       return clientResponse.bodyToFlux(Item.class);
+                   }
+                });
+    }
 }
