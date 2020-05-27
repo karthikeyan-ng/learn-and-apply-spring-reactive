@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.techstack</groupId>
-	<artifactId>learn-and-apply-spring-reactive</artifactId>
+	<artifactId>items-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>learn-and-apply-spring-reactive</name>
+	<name>items-service</name>
 	<description>Learn and Apply Reactive framework concepts using Spring Boot and WebFlex</description>
 
 	<properties>
