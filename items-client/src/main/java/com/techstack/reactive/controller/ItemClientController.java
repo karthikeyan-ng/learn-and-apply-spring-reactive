@@ -55,4 +55,17 @@ public class ItemClientController {
                 .bodyToMono(Item.class)
                 .log("Items in Client Call using Retrieve Single Item");
     }
+
+    @GetMapping("/client/exchange/singleItem")
+    public Mono<Item> getOneItemsUsingExchange() {
+
+        String id = "5ece6e9834cd6d162e32d147";
+
+        return webClient
+                .get()
+                .uri("/v1/items/{id}", id)
+                .exchange()
+                .flatMap(clientResponse -> clientResponse.bodyToMono(Item.class))
+                .log("Items in Client Call using Retrieve Single Item");
+    }
 }
