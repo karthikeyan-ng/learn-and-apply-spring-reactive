@@ -1,6 +1,8 @@
 package com.techstack.reactive.controller;
 
 import com.techstack.reactive.client.domain.Item;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 @RestController
 public class ItemClientController {
 
@@ -112,5 +115,26 @@ public class ItemClientController {
                 .retrieve()
                 .bodyToMono(Void.class)
                 .log("Deleted Item");
+    }
+
+    /**
+     * Error Handling scenario using retrieve() method
+     */
+    @GetMapping("/client/retrieve/error")
+    public Flux<Item> errorRetrieve() {
+        return webClient
+                .get()
+                .uri("/v1/items/runtimeException")
+                .retrieve()
+                .onStatus(HttpStatus::is5xxServerError, clientResponse -> {
+
+                    Mono<String> errorMono = clientResponse.bodyToMono(String.class);
+                    return errorMono.flatMap(errorMessage -> {
+                        log.error("The error Message is : " + errorMessage);
+                        throw new RuntimeException(errorMessage);
+                    });
+                })
+                .bodyToFlux(Item.class);
+
     }
 }
