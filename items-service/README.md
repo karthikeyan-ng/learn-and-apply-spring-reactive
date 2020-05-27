@@ -163,5 +163,8 @@ RestController
 FunctionalWeb
 * `ItemsRouter` and `ItemsHandler` and `ItemsHandlerTest`
 
-How to Handle Exception?
+How to Handle Exception (Rest)?
 * `ItemController.java # runtimeException()` and class level `handleRuntimeException()`
+
+How to Handle Exception (Functional)
+* `ItemHandler` and `ItemRouter` --> Default Error Json  

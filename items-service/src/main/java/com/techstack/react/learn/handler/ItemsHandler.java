@@ -80,4 +80,17 @@ public class ItemsHandler {
                     .body(fromObject(item))
                     .switchIfEmpty(notFound));
     }
+
+    /**
+     * This method will throw a RuntimeException.
+     * Who is responsible for preparing the default response json content?
+     * - DefaultErrorWebExceptionHandler.java
+     * - AbstractErrorWebExceptionHandler.java
+     *
+     * @param serverRequest
+     * @return
+     */
+    public Mono<ServerResponse> itemsException(ServerRequest serverRequest) {
+        throw new RuntimeException("Runtime Error Occurred");
+    }
 }
