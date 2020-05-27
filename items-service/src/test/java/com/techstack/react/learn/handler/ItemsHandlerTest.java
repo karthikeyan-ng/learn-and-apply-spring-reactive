@@ -150,4 +150,16 @@ class ItemsHandlerTest {
                 .expectBody()
                 .jsonPath("$.price", newPrice);
     }
+
+    @Test
+    @DisplayName("Test RuntimeException")
+    void runtimeException() {
+         webTestClient
+                 .get()
+                 .uri("/fun/runtimeException")
+                 .exchange()
+                 .expectStatus().is5xxServerError()
+                 .expectBody()
+                 .jsonPath("$.error", "Internal Server Error");
+    }
 }

@@ -168,3 +168,4 @@ How to Handle Exception (Rest)?
 
 How to Handle Exception (Functional)
 * `ItemHandler` and `ItemRouter` --> Default Error Json  
+* `FunctionalErrorWebExceptionHandler` and `ItemHandlerTest`
