@@ -2,8 +2,11 @@ package com.techstack.reactive.controller;
 
 import com.techstack.reactive.client.domain.Item;
 import org.springframework.http.MediaType;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -85,5 +88,18 @@ public class ItemClientController {
                 .retrieve()
                 .bodyToMono(Item.class)
                 .log("Created Item is : ");
+    }
+
+    @PutMapping("/client/updateItem/{id}")
+    public Mono<Item> updateItem(@PathVariable @NonNull final String id,
+                                 @RequestBody @NonNull final Item item) {
+
+        return webClient
+                .put()
+                .uri("/v1/items/{id}", id)
+                .body(Mono.just(item), Item.class)
+                .retrieve()
+                .bodyToMono(Item.class)
+                .log("Update Item is : ");
     }
 }
