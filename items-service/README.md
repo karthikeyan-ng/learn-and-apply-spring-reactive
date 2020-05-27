@@ -162,3 +162,6 @@ RestController
 
 FunctionalWeb
 * `ItemsRouter` and `ItemsHandler` and `ItemsHandlerTest`
+
+How to Handle Exception?
+* `ItemController.java # runtimeException()` and class level `handleRuntimeException()`
