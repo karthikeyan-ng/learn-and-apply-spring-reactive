@@ -3,6 +3,7 @@ package com.techstack.reactive.controller;
 import com.techstack.reactive.client.domain.Item;
 import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -101,5 +102,15 @@ public class ItemClientController {
                 .retrieve()
                 .bodyToMono(Item.class)
                 .log("Update Item is : ");
+    }
+
+    @DeleteMapping("/client/deleteItem/{id}")
+    public Mono<Void> deleteItem(@PathVariable @NonNull final String id) {
+        return webClient
+                .delete()
+                .uri("/v1/items/{id}", id)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .log("Deleted Item");
     }
 }
