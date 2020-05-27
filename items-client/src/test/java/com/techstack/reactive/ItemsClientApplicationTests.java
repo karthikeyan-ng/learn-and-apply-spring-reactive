@@ -1,4 +1,4 @@
-package com.techstack.reactive.client;
+package com.techstack.reactive;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
