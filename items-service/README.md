@@ -168,4 +168,21 @@ How to Handle Exception (Rest)?
 
 How to Handle Exception (Functional)
 * `ItemHandler` and `ItemRouter` --> Default Error Json  
-* `FunctionalErrorWebExceptionHandler` and `ItemHandlerTest`
+* `FunctionalErrorWebExceptionHandler` and `ItemHandlerTest`  
+
+### Streaming Endpoint / Server Sent Event (SSE)
+
+#### Streaming Endpoint or SSE?
+* It is an endpoint once the connection is made its going to keep pushing the data to the client as the new data is available.  
+* Realtime Use Cases:
+    * Stock Tickers
+    * Weather Updates
+    * Flight Arrival / Departure / Delay updates in Airports
+
+#### MongoDB
+* **Tailable Cursor**
+    *  Connection remains open after all the results are retrieved
+
+* **Capped Collection**
+    * Collection of fixed-size in MongoDB
+    * Preserves the insertion order
