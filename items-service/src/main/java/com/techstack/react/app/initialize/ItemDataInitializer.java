@@ -2,6 +2,7 @@ package com.techstack.react.app.initialize;
 
 import com.techstack.react.app.document.Item;
 import com.techstack.react.app.document.ItemCapped;
+import com.techstack.react.app.repository.ItemReactiveCappedRepository;
 import com.techstack.react.app.repository.ItemReactiveRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
 import java.util.List;
 
 @Profile("!test")
@@ -21,6 +23,7 @@ import java.util.List;
 public class ItemDataInitializer implements CommandLineRunner {
 
     private final ItemReactiveRepository itemReactiveRepository;
+    private final ItemReactiveCappedRepository itemReactiveCappedRepository;
     private final MongoOperations mongoOperations;
 
     @Override
@@ -28,6 +31,7 @@ public class ItemDataInitializer implements CommandLineRunner {
 
         initialDataSetup();
         createCappedCollection();
+        initialDataSetupForCappedCollection();
     }
 
     private void createCappedCollection() {
@@ -41,6 +45,17 @@ public class ItemDataInitializer implements CommandLineRunner {
                         .maxDocuments(20) //How many max documents this can store at a given point
                         .size(50000)  //What is the size of the whole capped collection
                         .capped());
+    }
+
+    private void initialDataSetupForCappedCollection() {
+
+        Flux<ItemCapped> itemCappedFlux = Flux
+                .interval(Duration.ofSeconds(1))
+                .map(value -> new ItemCapped(null, "Random Item "+ value, (100.0 + value)));
+
+        itemReactiveCappedRepository
+                .insert(itemCappedFlux)
+                .subscribe(itemCapped -> log.info("Inserted item is {}", itemCapped));
     }
 
     private void initialDataSetup() {
