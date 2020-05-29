@@ -1,6 +1,8 @@
 package com.techstack.react.learn.handler;
 
 import com.techstack.react.app.document.Item;
+import com.techstack.react.app.document.ItemCapped;
+import com.techstack.react.app.repository.ItemReactiveCappedRepository;
 import com.techstack.react.app.repository.ItemReactiveRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -16,6 +18,7 @@ import static org.springframework.web.reactive.function.BodyInserters.fromObject
 public class ItemsHandler {
 
     private final ItemReactiveRepository itemReactiveRepository;
+    private final ItemReactiveCappedRepository itemReactiveCappedRepository;
 
     static Mono<ServerResponse> notFound = ServerResponse.notFound().build();
 
@@ -92,5 +95,12 @@ public class ItemsHandler {
      */
     public Mono<ServerResponse> itemsException(ServerRequest serverRequest) {
         throw new RuntimeException("Runtime Error Occurred");
+    }
+
+    public Mono<ServerResponse> itemsStream(ServerRequest serverRequest) {
+        return ServerResponse
+                .ok()
+                .contentType(MediaType.APPLICATION_STREAM_JSON)
+                .body(itemReactiveCappedRepository.findItemsBy(), ItemCapped.class);
     }
 }

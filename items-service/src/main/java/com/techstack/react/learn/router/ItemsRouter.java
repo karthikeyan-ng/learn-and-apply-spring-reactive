@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 import static com.techstack.react.app.consts.ItemConstants.ITEM_FUNCTIONAL_END_POINT_V1;
+import static com.techstack.react.app.consts.ItemConstants.ITEM_FUNCTIONAL_STREAM_END_POINT_V1;
 import static org.springframework.web.reactive.function.server.RequestPredicates.DELETE;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
@@ -46,5 +47,12 @@ public class ItemsRouter {
         return RouterFunctions
                 .route(GET("/fun/runtimeException").and(accept(MediaType.APPLICATION_JSON)),
                         itemsHandler::itemsException);
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> itemStreamRouter(ItemsHandler itemsHandler) {
+        return RouterFunctions
+                .route(GET(ITEM_FUNCTIONAL_STREAM_END_POINT_V1).and(accept(MediaType.APPLICATION_JSON)),
+                        itemsHandler::itemsStream);
     }
 }
